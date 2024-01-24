@@ -80,7 +80,7 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
                         length = len
 
                         if (size < length)
-                            throw IndexOutOfBoundsException("field [$bit] size[$size] < length[$length]")
+                            throw IndexOutOfBoundsException("field [$bit] size[$size] < length[$length] FRAME[${frame.toHexaString()}")
                     }
 
                     EFormat.VAR_NUMERIC -> {
@@ -98,7 +98,7 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
                         length /= 2
 
                         if (size < length) {
-                            throw IndexOutOfBoundsException("field [$bit] size[$size] < length[$length]")
+                            throw IndexOutOfBoundsException("field [$bit] size[$size] < length[$length] FRAME[${frame.toHexaString()}")
                         }
                     }
 
@@ -120,7 +120,7 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
                 }
 
                 this.mapper[nField] = MapData().setMap(format, length, position)
-                Log.i(TAG,"Field[$nField] - Frame[${frame.copyOfRange(position, position + length).toHexaString()}] - Lenght[$length]")
+                Log.i(TAG,"Field[$nField] - Field[${frame.copyOfRange(position, position + length).toHexaString()}] - Lenght[$length]")
                 position += length
             }
             nField++
@@ -128,17 +128,13 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
     }
 
     fun getField(nField: Int): ByteArray {
-        val mapData = validateField(nField)
-        return frame.copyOfRange(mapData.position, mapData.position + mapData.length)
-    }
-
-    private fun validateField(nField: Int): MapData {
         val mapData = mapper[nField]
 
         if (mapData.isEmpty()) {
-            throw ExceptionInInitializerError("Mapper position (nField [$nField])")
+            Log.i(TAG, "Mapper position nField [$nField] is Empty" )
+            return ByteArray(0)
         }
 
-        return mapData
+        return frame.copyOfRange(mapData.position, mapData.position + mapData.length)
     }
 }

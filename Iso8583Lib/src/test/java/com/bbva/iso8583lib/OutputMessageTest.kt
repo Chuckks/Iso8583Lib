@@ -1,9 +1,9 @@
 package com.bbva.iso8583lib
 
-import android.util.Log
+import com.bbva.iso8583lib.IsoFileTest.Companion.DEFAULT_ISO_FIELD_55
 import com.bbva.iso8583lib.iso.OutputMessage
 import com.bbva.iso8583lib.iso.UnpackerIso
-import com.bbva.utilitieslib.utils.Convert
+import com.bbva.utilitieslib.extensions.toHexaBytes
 import org.junit.Assert
 import org.junit.Test
 
@@ -21,6 +21,8 @@ class OutputMessageTest {
         outputMessage.setField(4, 90000)
         outputMessage.setField(11, 999999)
         outputMessage.setField(48, "004451761")
+        outputMessage.setField(55, DEFAULT_ISO_FIELD_55.toHexaBytes())
+
 
         val packedData = outputMessage.pack()
         Assert.assertFalse(packedData.isEmpty())

@@ -75,13 +75,13 @@
     },
     {
       "field": 12,
-      "name": "Date & Time, Local transaction",
-      "format": "FIX_CHAR",
+      "name": "Local Tran Time",
+      "format": "FIX_NUMERIC",
       "size": 6
     },
     {
       "field": 13,
-      "name": "Effective date",
+      "name": " Local Tran Date",
       "format": "FIX_NUMERIC",
       "size": 4
     },
@@ -135,13 +135,13 @@
     },
     {
       "field": 22,
-      "name": "Point of service data code",
+      "name": "POS Entry Mode",
       "format": "FIX_NUMERIC",
       "size": 3
     },
     {
       "field": 23,
-      "name": "Card sequence number",
+      "name": "Card Sequence Number",
       "format": "FIX_NUMERIC",
       "size": 3
     },
@@ -154,8 +154,8 @@
     {
       "field": 25,
       "name": "Message reason code",
-      "format": "FIX_NUMERIC",
-      "size": 4
+      "format": "VAR_CHAR",
+      "size": 2
     },
     {
       "field": 26,
@@ -215,7 +215,7 @@
       "field": 35,
       "name": "Track 2 data",
       "format": "VAR_CHAR",
-      "size": 48
+      "size": 37
     },
     {
       "field": 36,
@@ -238,8 +238,8 @@
     {
       "field": 39,
       "name": "Response code",
-      "format": "FIX_NUMERIC",
-      "size": 3
+      "format": "FIX_CHAR",
+      "size": 2
     },
     {
       "field": 40,
@@ -291,14 +291,14 @@
     },
     {
       "field": 48,
-      "name": "Additional data - private",
+      "name": "Additional Data-Retailer Data",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 999
     },
     {
       "field": 49,
-      "name": "Currency code, Transaction",
-      "format": "FIX_CHAR",
+      "name": "Transaction Currency Code",
+      "format": "FIX_NUMERIC",
       "size": 3
     },
     {
@@ -315,9 +315,9 @@
     },
     {
       "field": 52,
-      "name": "Personal identification number PIN",
+      "name": "PIN Data",
       "format": "FIX_CHAR",
-      "size": 8
+      "size": 16
     },
     {
       "field": 53,
@@ -327,69 +327,69 @@
     },
     {
       "field": 54,
-      "name": "Amounts, additional",
+      "name": "Additional Amounts",
       "format": "VAR_CHAR",
-      "size": 120
+      "size": 12
     },
     {
       "field": 55,
-      "name": "IC card system related data",
+      "name": "Datos de EMV Full Grade",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 256
     },
     {
       "field": 56,
-      "name": "Original data elements",
+      "name": "Custom Service Data",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 255
     },
     {
       "field": 57,
-      "name": "Authorization life cycle code",
-      "format": "FIX_NUMERIC",
-      "size": 9999
+      "name": "CV2",
+      "format": "VAR_CHAR",
+      "size": 15
     },
     {
       "field": 58,
-      "name": "Authorizing agent institution Id Code",
-      "format": "VAR_NUMERIC",
-      "size": 9999
+      "name": "Point Redemption",
+      "format": "VAR_CHAR",
+      "size": 255
     },
     {
       "field": 59,
-      "name": "Reserved for private use",
+      "name": "Campaign Data",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 999
     },
     {
       "field": 60,
-      "name": "Reserved for private use",
+      "name": " POS Terminal Entry Capability",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 25
     },
     {
       "field": 61,
-      "name": "Reserved for private use",
+      "name": "Logon Data",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 256
     },
     {
       "field": 62,
-      "name": "Reserved for private use",
+      "name": "EMV Reference Cryptogram",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 8
     },
     {
       "field": 63,
-      "name": "Reserved for private use",
+      "name": "Transaction Data",
       "format": "VAR_CHAR",
-      "size": 9999
+      "size": 999
     },
     {
       "field": 64,
       "name": "Message authentication code field",
       "format": "FIX_CHAR",
-      "size": 8
+      "size": 999
     }
   ]
 }

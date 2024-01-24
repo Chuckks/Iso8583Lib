@@ -3,9 +3,11 @@ package com.bbva.iso8583lib
 import com.bbva.iso8583lib.iso.UnpackerIso
 import com.bbva.iso8583lib.iso.data.EFormat
 import com.bbva.iso8583lib.iso.data.Field
-import com.bbva.iso8583lib.iso.data.Version
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.Assert.*
 
 class UnpackerIsoTest {
 

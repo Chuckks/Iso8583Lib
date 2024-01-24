@@ -5,8 +5,8 @@ import com.bbva.iso8583lib.iso.data.Version
 class IsoFileTest {
     companion object{
         val DEFAULT_VERSION = Version(1, 0, 0)
-        const val DEFAULT_BYTEARRAY_ISO = "01DF6000220000020030380000000000000000000000000600000000181255020108"
-            //"01DF600022000002003038060008818312000000000000090000000019130835010800510001486345556D3371476D5A6F6730303030303030310009303034343531373631048401245F2A02048482021C008407A0000000032010950580800080009A032401089C01009F02060000000900009F03060000000000009F090200839F100706010A03A4A8109F1A0204849F1E0836523635333530349F26082E078F5CEA112DAA9F2701809F3303E0B0C89F34030103029F3501229F4104000000019F5301000069000A50583652363533353034010B42425641525432395F3130020E52544D563235323931313233323915133839333430373632303030303935333935313816013220023530000230330205455A373230303130313030303132453930313030303030363030303030303530303133383030303034184805B90D0FE4118C8EB6E45A57FD296ECEFBAF16B452393435363636443443393943523731334E202020202020202020202020435A34303031353920202020202020202020202020202020202020202020202020202020202020202020202051363036303030333035514B3438F8A7779C3F418690AD0E3C073780C2CFD1C35589227E969DB889BA75549509FE07756777EA0309014634434341344330515230325320"
+        const val DEFAULT_ISO_FIELD_55 = "5F2A02048482021C008407A0000000032010950580800080009A032401089C01009F02060000000900009F03060000000000009F090200839F100706010A03A4A8109F1A0204849F1E0836523635333530349F26082E078F5CEA112DAA9F2701809F3303E0B0C89F34030103029F3501229F4104000000019F530100"
+        const val DEFAULT_BYTEARRAY_ISO = "01DF600022000002003038060008818312000000000000090000000019130835010800510001486345556D3371476D5A6F6730303030303030310009303034343531373631048401245F2A02048482021C008407A0000000032010950580800080009A032401089C01009F02060000000900009F03060000000000009F090200839F100706010A03A4A8109F1A0204849F1E0836523635333530349F26082E078F5CEA112DAA9F2701809F3303E0B0C89F34030103029F3501229F4104000000019F5301000069000A50583652363533353034010B42425641525432395F3130020E52544D563235323931313233323915133839333430373632303030303935333935313816013220023530000230330205455A373230303130313030303132453930313030303030363030303030303530303133383030303034184805B90D0FE4118C8EB6E45A57FD296ECEFBAF16B452393435363636443443393943523731334E202020202020202020202020435A34303031353920202020202020202020202020202020202020202020202020202020202020202020202051363036303030333035514B3438F8A7779C3F418690AD0E3C073780C2CFD1C35589227E969DB889BA75549509FE07756777EA0309014634434341344330515230325320"
 
          const val file: String =
              "{\n" +
@@ -86,13 +86,13 @@ class IsoFileTest {
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 12,\n" +
-                     "      \"name\": \"Date & Time, Local transaction\",\n" +
+                     "      \"name\": \"Local Tran Time\",\n" +
                      "      \"format\": \"FIX_NUMERIC\",\n" +
                      "      \"size\": 6\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 13,\n" +
-                     "      \"name\": \"Effective date\",\n" +
+                     "      \"name\": \" Local Tran Date\",\n" +
                      "      \"format\": \"FIX_NUMERIC\",\n" +
                      "      \"size\": 4\n" +
                      "    },\n" +
@@ -146,13 +146,13 @@ class IsoFileTest {
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 22,\n" +
-                     "      \"name\": \"Point of service data code\",\n" +
+                     "      \"name\": \"POS Entry Mode\",\n" +
                      "      \"format\": \"FIX_NUMERIC\",\n" +
                      "      \"size\": 3\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 23,\n" +
-                     "      \"name\": \"Card sequence number\",\n" +
+                     "      \"name\": \"Card Sequence Number\",\n" +
                      "      \"format\": \"FIX_NUMERIC\",\n" +
                      "      \"size\": 3\n" +
                      "    },\n" +
@@ -165,8 +165,8 @@ class IsoFileTest {
                      "    {\n" +
                      "      \"field\": 25,\n" +
                      "      \"name\": \"Message reason code\",\n" +
-                     "      \"format\": \"FIX_NUMERIC\",\n" +
-                     "      \"size\": 4\n" +
+                     "      \"format\": \"VAR_CHAR\",\n" +
+                     "      \"size\": 2\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 26,\n" +
@@ -226,7 +226,7 @@ class IsoFileTest {
                      "      \"field\": 35,\n" +
                      "      \"name\": \"Track 2 data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 48\n" +
+                     "      \"size\": 37\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 36,\n" +
@@ -249,8 +249,8 @@ class IsoFileTest {
                      "    {\n" +
                      "      \"field\": 39,\n" +
                      "      \"name\": \"Response code\",\n" +
-                     "      \"format\": \"FIX_NUMERIC\",\n" +
-                     "      \"size\": 3\n" +
+                     "      \"format\": \"FIX_CHAR\",\n" +
+                     "      \"size\": 2\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 40,\n" +
@@ -302,14 +302,14 @@ class IsoFileTest {
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 48,\n" +
-                     "      \"name\": \"Additional data - private\",\n" +
+                     "      \"name\": \"Additional Data-Retailer Data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 999\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 49,\n" +
-                     "      \"name\": \"Currency code, Transaction\",\n" +
-                     "      \"format\": \"FIX_CHAR\",\n" +
+                     "      \"name\": \"Transaction Currency Code\",\n" +
+                     "      \"format\": \"FIX_NUMERIC\",\n" +
                      "      \"size\": 3\n" +
                      "    },\n" +
                      "    {\n" +
@@ -326,9 +326,9 @@ class IsoFileTest {
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 52,\n" +
-                     "      \"name\": \"Personal identification number PIN\",\n" +
+                     "      \"name\": \"PIN Data\",\n" +
                      "      \"format\": \"FIX_CHAR\",\n" +
-                     "      \"size\": 8\n" +
+                     "      \"size\": 16\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 53,\n" +
@@ -338,69 +338,69 @@ class IsoFileTest {
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 54,\n" +
-                     "      \"name\": \"Amounts, additional\",\n" +
+                     "      \"name\": \"Additional Amounts\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 120\n" +
+                     "      \"size\": 12\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 55,\n" +
-                     "      \"name\": \"IC card system related data\",\n" +
+                     "      \"name\": \"Datos de EMV Full Grade\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 256\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 56,\n" +
-                     "      \"name\": \"Original data elements\",\n" +
+                     "      \"name\": \"Custom Service Data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 255\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 57,\n" +
-                     "      \"name\": \"Authorization life cycle code\",\n" +
-                     "      \"format\": \"FIX_NUMERIC\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"name\": \"CV2\",\n" +
+                     "      \"format\": \"VAR_CHAR\",\n" +
+                     "      \"size\": 15\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 58,\n" +
-                     "      \"name\": \"Authorizing agent institution Id Code\",\n" +
-                     "      \"format\": \"VAR_NUMERIC\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"name\": \"Point Redemption\",\n" +
+                     "      \"format\": \"VAR_CHAR\",\n" +
+                     "      \"size\": 255\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 59,\n" +
-                     "      \"name\": \"Reserved for private use\",\n" +
+                     "      \"name\": \"Campaign Data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 999\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 60,\n" +
-                     "      \"name\": \"Reserved for private use\",\n" +
+                     "      \"name\": \" POS Terminal Entry Capability\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 999\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 61,\n" +
-                     "      \"name\": \"Reserved for private use\",\n" +
+                     "      \"name\": \"Logon Data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 256\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 62,\n" +
-                     "      \"name\": \"Reserved for private use\",\n" +
+                     "      \"name\": \"EMV Reference Cryptogram\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 8\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 63,\n" +
-                     "      \"name\": \"Reserved for private use\",\n" +
+                     "      \"name\": \"Transaction Data\",\n" +
                      "      \"format\": \"VAR_CHAR\",\n" +
-                     "      \"size\": 9999\n" +
+                     "      \"size\": 999\n" +
                      "    },\n" +
                      "    {\n" +
                      "      \"field\": 64,\n" +
                      "      \"name\": \"Message authentication code field\",\n" +
                      "      \"format\": \"FIX_CHAR\",\n" +
-                     "      \"size\": 8\n" +
+                     "      \"size\": 999\n" +
                      "    }\n" +
                      "  ]\n" +
                      "}"
