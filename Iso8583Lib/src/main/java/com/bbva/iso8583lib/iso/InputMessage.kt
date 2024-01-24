@@ -7,17 +7,19 @@ import com.bbva.iso8583lib.iso.data.MapData
 import com.bbva.iso8583lib.utils.Constant
 import com.bbva.utilitieslib.extensions.getDigitCount
 import com.bbva.utilitieslib.extensions.readBbcPair
-import com.bbva.utilitieslib.extensions.readBcd
 import com.bbva.utilitieslib.extensions.toHexaString
+
+private const val DEFAULT_FRAME_SIZE = 0
+private const val DEFAULT_MTI = true
 
 private val TAG = Constant.ISO_PRFIX + InputMessage::class.java.simpleName
 
 class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: Int) :
-    Message(packageData = packagerIso, mtiAvailable = mtiAvailable, frame = ByteArray(frameSize)),
+    Message(packageData = packagerIso, mtiAvailable = mtiAvailable, frame = ByteArray(frameSize), headerSize = 7),
     IEmpty {
 
     constructor(unpackerIso: UnpackerIso) :
-            this(packagerIso = unpackerIso, mtiAvailable = false, frameSize = 0)
+            this(packagerIso = unpackerIso, mtiAvailable = DEFAULT_MTI, frameSize = DEFAULT_FRAME_SIZE)
 
     override fun isEmpty() = (frame.isEmpty() && bitmap.isEmpty() && mapper.isEmpty())
 
@@ -28,10 +30,9 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
         if (frame.isEmpty())
             throw IllegalArgumentException("Frame [${frame.size}]")
 
-        mapper.clear()
+       // mapper.clear()
         this.frame = frame
 
-        val mapper = MapData()
         var nField = 0
         var position = 0
 
@@ -46,24 +47,24 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
             //@MESSAGE TYPE
             val field = packageData.getItem(nField)
             length = field.size / 2
-            mapper.setMap(field.getFormat(), length, position)
 
-            this.mapper[nField] = mapper
-            Log.i(TAG, "MTI [${frame.copyOfRange(position, length).toHexaString()}")
+            this.mapper[nField] = MapData().setMap(field.getFormat(), length, position)
+            Log.i(TAG, "MTI [${frame.copyOfRange(position, position + length).toHexaString()}")
             position += length
         }
         ++nField
 
         //@BITMAP
-        bitmap = Bitmap(this.frame.copyOfRange(position, packageData.getItem(nField).size))
+        bitmap = Bitmap(this.frame.copyOfRange(position, position + packageData.getItem(nField).size))
         length = bitmap.getSize()
 
-        mapper.setMap(packageData.getItem(nField).getFormat(), length, position)
-        this.mapper[nField] = mapper
+        this.mapper[nField] = MapData().setMap(packageData.getItem(nField).getFormat(), length, position)
+
         Log.i(TAG, "BITMAP [${bitmap.value.toHexaString()}]")
+        position += length
 
         for (bit in 1 until packageData.getCounter()) {
-            if (bitmap.isBitOn(bit.toByte())) {
+            if (bitmap.isBitOn(bit)) {
                 val format = packageData.getItem(nField).getFormat()
 
                 var size = packageData.getItem(nField).size
@@ -117,54 +118,27 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
                     }
 
                 }
-                mapper.setMap(format, length, position)
-                this.mapper[nField] = mapper
-                Log.i(
-                    TAG,
-                    "Field[$nField] - Frame[${
-                        frame.copyOfRange(
-                            position,
-                            frame.size
-                        )
-                    }] - Lenght[$length]"
-                )
+
+                this.mapper[nField] = MapData().setMap(format, length, position)
+                Log.i(TAG,"Field[$nField] - Frame[${frame.copyOfRange(position, position + length).toHexaString()}] - Lenght[$length]")
                 position += length
             }
             nField++
         }
     }
 
-    fun getNumField(nField: Int): Int {
-        var field: Int
-        val mapData = validateFieldFormat(nField, true)
-        field = frame.readBcd(mapData.position, mapData.length * 2)
-        return field
-    }
-
     fun getField(nField: Int): ByteArray {
-        val mapData = validateFieldFormat(nField, false)
+        val mapData = validateField(nField)
         return frame.copyOfRange(mapData.position, mapData.position + mapData.length)
     }
 
-    fun getLength(nField: Int): Int =
-        validateFieldFormat(nField, false).length
-
-    private fun validateFieldFormat(nField: Int, numeric: Boolean): MapData {
+    private fun validateField(nField: Int): MapData {
         val mapData = mapper[nField]
 
         if (mapData.isEmpty()) {
             throw ExceptionInInitializerError("Mapper position (nField [$nField])")
         }
 
-        val format = packageData.getItem(nField).getFormat()
-
-        if (numeric) {
-            if (format != EFormat.VAR_NUMERIC && format != EFormat.FIX_NUMERIC) {
-                throw UnsupportedOperationException(" Format [${format.name}] -> nField [$nField]")
-            }
-        } else if (format != EFormat.VAR_CHAR && format != EFormat.FIX_CHAR) {
-            throw UnsupportedOperationException(" Format [${format.name}] -> nField [$nField]")
-        }
         return mapData
     }
 }

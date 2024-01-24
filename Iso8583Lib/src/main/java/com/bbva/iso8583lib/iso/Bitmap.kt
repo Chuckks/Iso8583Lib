@@ -5,13 +5,13 @@ import kotlin.experimental.and
 
 private const val BITS_PER_BYTE = 8
 
-class Bitmap(size: Byte): IContenible {
+class Bitmap(size: Int): IContenible {
 
-    constructor(value: ByteArray): this(BITS_PER_BYTE.toByte()){
+    constructor(value: ByteArray): this(BITS_PER_BYTE){
         this.value = value
     }
 
-    var value: ByteArray = byteArrayOf(size)
+    var value: ByteArray = ByteArray(size)
 
     override fun clean() {
         value = ByteArray(value.size)
@@ -19,7 +19,7 @@ class Bitmap(size: Byte): IContenible {
 
     override fun isEmpty(): Boolean {
         for (index in 1..value.size) {
-            if (isBitOn(index.toByte())) {
+            if (isBitOn(index)) {
                 return false
             }
         }
@@ -28,42 +28,42 @@ class Bitmap(size: Byte): IContenible {
 
     fun getSize(): Int = value.size
 
-    fun isBitOn(nField: Byte): Boolean {
+    fun isBitOn(nField: Int): Boolean {
         checkField(nField)
-        var divBitMap: Byte
+        var divBitMap: Int
 
-        for (block in 0 until value.size) {
-            divBitMap = 0x80.toByte()
+          for (block in value.indices) {
+              divBitMap = 0x80
 
-            for (bit in 1..BITS_PER_BYTE) {
-                if ((block * BITS_PER_BYTE + bit).toByte() == nField) {
-                    return (value[block].toByte() and divBitMap) != 0.toByte()
-                }
-                divBitMap = (divBitMap.toInt() shr 1).toByte()
-            }
-        }
-        return false
+              for (bit in 1..BITS_PER_BYTE) {
+                  if ((block * BITS_PER_BYTE + bit) == nField) {
+                      return (value[block] and divBitMap.toByte()) != 0.toByte()
+                  }
+                  divBitMap = (divBitMap shr 1)
+              }
+          }
+          return false
     }
 
-    fun setBitOn(nField: Byte) {
+    fun setBitOn(nField: Int) {
         checkField(nField)
-        for (block in 0 until value.size) {
+        for (block in value.indices) {
             var bmap = value[block].toByte()
-            var divBitMap: Byte = 0x80.toByte()
+            var divBitMap: Int = 0x80
 
             for (bit in 1..BITS_PER_BYTE) {
-                if ((block * BITS_PER_BYTE + bit).toByte() == nField) {
+                if ((block * BITS_PER_BYTE + bit) == nField) {
                     bmap = (bmap + divBitMap).toByte()
-                    value[block] = bmap.toByte()
+                    value[block] = bmap
                     break
                 }
 
-                divBitMap = (divBitMap.toInt() shr 1).toByte()
+                divBitMap = (divBitMap shr 1)
             }
         }
     }
 
-    fun checkField(nField: Byte){
+    fun checkField(nField: Int){
         if(nField > BITS_PER_BYTE * value.size)
             throw IndexOutOfBoundsException ("nField [$nField] > MaxSIze [${BITS_PER_BYTE * value.size}]")
 

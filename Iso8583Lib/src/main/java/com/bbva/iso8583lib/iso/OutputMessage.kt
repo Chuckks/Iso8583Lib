@@ -10,12 +10,15 @@ import com.bbva.utilitieslib.utils.Convert
 
 private val TAG = Constant.ISO_PRFIX + OutputMessage::class.java.simpleName
 
+private const val DEFAULT_FRAME_SIZE = 0
+private const val DEFAULT_MTI = true
+
 class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: Int) :
     Message(packageData = packagerIso, mtiAvailable = mtiAvailable, frame = ByteArray(frameSize)),
     IEmpty {
 
     constructor(unpackerIso: UnpackerIso) :
-            this(packagerIso = unpackerIso, mtiAvailable = false, frameSize = 0)
+            this(packagerIso = unpackerIso, mtiAvailable = DEFAULT_MTI, frameSize = DEFAULT_FRAME_SIZE)
 
     override fun isEmpty() = (frame.isEmpty() && bitmap.isEmpty() && mapper.isEmpty())
 
@@ -26,7 +29,7 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
         if (this.frame.isEmpty())
             throw ExceptionInInitializerError( "Not set any fields")
 
-        var result = ByteArray(getFragmentLen())
+        var result = ByteArray(0)
 
         if (header.isNotEmpty() && headerSize == this.header.size) {
             result += this.header
@@ -42,9 +45,7 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
             if (mapDat.isEmpty())
                 throw  ExceptionInInitializerError("nField [$nField]")
 
-            var mti = ByteArray(mapDat.length)
-            mti += frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length) //TODO Revisar si esta sacando bien los datos
-
+            var mti = frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length)
             Log.i(TAG, "MTI  [${mti.contentToString()}] SIZE [${mti.size}]")
             result += mti
         }
@@ -59,53 +60,42 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
             val mapDat = mapper[nField]
 
             if (mapDat.isNotEmpty()) {
-                bitmap.setBitOn(bit.toByte())
-                var field = ByteArray(mapDat.length)
+                bitmap.setBitOn(bit)
+                var field = ByteArray(0)
                 field += frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length)
+
                 val nFieldLog = "F%02d".format(nField)
-                Log.i(TAG, "$nFieldLog FIELD [${field.contentToString()}] SIZE[${field.size}")
+                Log.i(TAG, "$nFieldLog FIELD [${field}] SIZE[${field.size}")
                 result += field
             }
 
             nField++
         }
-        //TODO validar como agregar el bitmap al result
-        //result.copyTo(bitmap.value, positionBitmap)
-        //result.copytwrite(positionBitmap, bitmap.value)
-        Log.i(TAG, "BITMAP [${bitmap.value.contentToString()}  SIZE[${bitmap.value.size}]")
-
+        bitmap.value.copyInto(result, destinationOffset = positionBitmap)
+        Log.i(TAG, "BITMAP [${Convert.toBcdToHexa(bitmap.value)}  SIZE[${bitmap.value.size}]")
         return result
     }
 
-
-    private fun getFragmentLen(): Int{
-        var length: Int
-        var totalLength = header.size + bitmap.getSize()
-
-        for (nField in 0 until this.mapper.size) {
-            length = this.mapper[nField].length
-            if (length > 0) {
-                totalLength += length
-            }
-        }
-        return totalLength
+    fun setField(nField: Int, value: String){
+        setField(nField, value.toByteArray())
     }
 
     fun setField(nField: Int, value: ByteArray) {
         val size = packageData.getItem(nField).size
         val format = packageData.getItem(nField).getFormat()
+        var length = value.size
 
-        val count = value.size.coerceAtMost(size)  // Usamos size del ByteArray
+        if( length > size ) {
+            Log.i(TAG,"Field [$nField] lenCopy [$length] > sizeField [$size]")
+            length = size
+        }
+
+
         val position = this.frame.size
-        val variable = addLength(format, count, size)
+        val variable = addLength(format, length, size)
 
-        mapper[nField] = MapData(format, count + variable, position)
-
-        frame += (value.sliceArray(0 until count))  // Añadimos solo los primeros 'count' elementos
-    }
-
-    fun setField(nField: Int, value: String){
-        setField(nField, value.toByteArray())
+        mapper[nField] = MapData(format, variable + length, position)
+        frame += (value.sliceArray(0 until length))
     }
 
     fun setField(nField: Int, value: Int){
@@ -124,35 +114,29 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
         size /= 2
 
         mapper[nField] = MapData(format, size + variable, position)
+
        frame += Convert.toAsciiToBcd(aux.toString().toByteArray())
     }
 
     private fun addLength(format: EFormat, length: Int, size: Int): Int{
-        var variable: Int
-
-        when(format){
+        return when(format){
             EFormat.VAR_CHAR,
             EFormat.VAR_NUMERIC -> {
-                variable = size.getDigitCount()
+                var variable = size.getDigitCount()
 
                 if (variable and 0x01 != 0)
                     ++variable
 
                 variable /= 2
                 frame += Convert.toDecimalToBcd(variable, length)
+                variable
             }
 
             EFormat.FIX_CHAR,
-            EFormat.FIX_NUMERIC -> {
-                variable = 0
-             }
+            EFormat.FIX_NUMERIC -> { 0 }
 
-            else -> {
-                throw IllegalArgumentException("Format [$format] Wrong")
-                return 0
-            }
+            else -> { 0 }
         }
-        return variable
     }
 
 }

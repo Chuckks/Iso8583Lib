@@ -18,9 +18,10 @@ data class MapData(var type: EFormat = DEFAULT_TYPE,
 
     override fun isEmpty() = (type == DEFAULT_TYPE && length == DEFAULT_LENGTH && position == DEFAULT_POSITION)
 
-    fun setMap(type: EFormat, length: Int, position: Int){
+    fun setMap(type: EFormat, length: Int, position: Int): MapData {
         this.type = type
         this.length = length
         this.position = position
+        return this
     }
 }

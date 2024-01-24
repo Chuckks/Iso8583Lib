@@ -65,8 +65,7 @@ data class Version( var major: Int = DEFAULT_MAJOR, var minor: Int = DEFAULT_MIN
                     if (at < 0)
                         throw IllegalArgumentException("Version [$value] wrong")
 
-                    val calc = at - index
-                    val number = newValue.substring(index, calc).toInt()
+                    val number = newValue.substring(index, at).toInt()
 
                     when(position){
                         0 -> major = number

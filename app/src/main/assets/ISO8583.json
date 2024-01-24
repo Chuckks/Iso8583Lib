@@ -1,0 +1,395 @@
+{
+  "versión": "1.0.0",
+  "fields": [
+    {
+      "field": 0,
+      "name": "Message Type Indicator",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 1,
+      "name": "Bitmap",
+      "format": "FIX_CHAR",
+      "size": 8
+    },
+    {
+      "field": 2,
+      "name": "Primary Account number PAN",
+      "format": "VAR_CHAR",
+      "size": 24
+    },
+    {
+      "field": 3,
+      "name": "Processing Code",
+      "format": "FIX_NUMERIC",
+      "size": 6
+    },
+    {
+      "field": 4,
+      "name": "Amount, transaction",
+      "format": "FIX_NUMERIC",
+      "size": 12
+    },
+    {
+      "field": 5,
+      "name": "Amount, Settlement",
+      "format": "FIX_NUMERIC",
+      "size": 12
+    },
+    {
+      "field": 6,
+      "name": "Amount, cardholder billing",
+      "format": "FIX_NUMERIC",
+      "size": 12
+    },
+    {
+      "field": 7,
+      "name": "Transmission date & time",
+      "format": "FIX_NUMERIC",
+      "size": 10
+    },
+    {
+      "field": 8,
+      "name": "Amount, Cardholder billing fee",
+      "format": "FIX_NUMERIC",
+      "size": 8
+    },
+    {
+      "field": 9,
+      "name": "CConversion rate, Settlement",
+      "format": "FIX_NUMERIC",
+      "size": 8
+    },
+    {
+      "field": 10,
+      "name": "Conversion rate, cardholder billing",
+      "format": "FIX_NUMERIC",
+      "size": 8
+    },
+    {
+      "field": 11,
+      "name": "Systems trace audit number",
+      "format": "FIX_NUMERIC",
+      "size": 6
+    },
+    {
+      "field": 12,
+      "name": "Date & Time, Local transaction",
+      "format": "FIX_CHAR",
+      "size": 6
+    },
+    {
+      "field": 13,
+      "name": "Effective date",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 14,
+      "name": "Expiration date",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 15,
+      "name": "Settlement date",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 16,
+      "name": "Conversion date",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 17,
+      "name": "Capture date",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 18,
+      "name": "Merchant type",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 19,
+      "name": "Country code, Acquiring institution",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 20,
+      "name": "Country code, Primary account number",
+      "format": "FIX_NUMERIC",
+      "size": 3
+    },
+    {
+      "field": 21,
+      "name": "Country code, Forwarding institution",
+      "format": "FIX_NUMERIC",
+      "size": 3
+    },
+    {
+      "field": 22,
+      "name": "Point of service data code",
+      "format": "FIX_NUMERIC",
+      "size": 3
+    },
+    {
+      "field": 23,
+      "name": "Card sequence number",
+      "format": "FIX_NUMERIC",
+      "size": 3
+    },
+    {
+      "field": 24,
+      "name": "Function code",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 25,
+      "name": "Message reason code",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 26,
+      "name": "Card acceptor business code",
+      "format": "FIX_NUMERIC",
+      "size": 4
+    },
+    {
+      "field": 27,
+      "name": "Approval code length",
+      "format": "FIX_NUMERIC",
+      "size": 1
+    },
+    {
+      "field": 28,
+      "name": "Date, Reconciliation",
+      "format": "FIX_NUMERIC",
+      "size": 8
+    },
+    {
+      "field": 29,
+      "name": "Reconciliation indicator",
+      "format": "FIX_NUMERIC",
+      "size": 8
+    },
+    {
+      "field": 30,
+      "name": "Amounts, original",
+      "format": "FIX_CHAR",
+      "size": 12
+    },
+    {
+      "field": 31,
+      "name": "Acquirer reference data",
+      "format": "VAR_CHAR",
+      "size": 99
+    },
+    {
+      "field": 32,
+      "name": "Acquirer institution ident code",
+      "format": "VAR_NUMERIC",
+      "size": 11
+    },
+    {
+      "field": 33,
+      "name": "Forwarding institution ident code",
+      "format": "VAR_NUMERIC",
+      "size": 11
+    },
+    {
+      "field": 34,
+      "name": "Primary account number, extended",
+      "format": "VAR_CHAR",
+      "size": 28
+    },
+    {
+      "field": 35,
+      "name": "Track 2 data",
+      "format": "VAR_CHAR",
+      "size": 48
+    },
+    {
+      "field": 36,
+      "name": "Track 3 data",
+      "format": "VAR_CHAR",
+      "size": 14
+    },
+    {
+      "field": 37,
+      "name": "Retrieval reference number",
+      "format": "FIX_CHAR",
+      "size": 12
+    },
+    {
+      "field": 38,
+      "name": "Approval code",
+      "format": "FIX_CHAR",
+      "size": 6
+    },
+    {
+      "field": 39,
+      "name": "Response code",
+      "format": "FIX_NUMERIC",
+      "size": 3
+    },
+    {
+      "field": 40,
+      "name": "Service restriction code",
+      "format": "FIX_CHAR",
+      "size": 3
+    },
+    {
+      "field": 41,
+      "name": "Card acceptor terminal identification",
+      "format": "FIX_CHAR",
+      "size": 8
+    },
+    {
+      "field": 42,
+      "name": "Card acceptor identification code",
+      "format": "FIX_CHAR",
+      "size": 15
+    },
+    {
+      "field": 43,
+      "name": "Card acceptor name/location",
+      "format": "VAR_CHAR",
+      "size": 99
+    },
+    {
+      "field": 44,
+      "name": "Additional response data",
+      "format": "VAR_CHAR",
+      "size": 99
+    },
+    {
+      "field": 45,
+      "name": "Track 1 data",
+      "format": "VAR_CHAR",
+      "size": 80
+    },
+    {
+      "field": 46,
+      "name": "Additional data - ISO",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 47,
+      "name": "Additional data - national",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 48,
+      "name": "Additional data - private",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 49,
+      "name": "Currency code, Transaction",
+      "format": "FIX_CHAR",
+      "size": 3
+    },
+    {
+      "field": 50,
+      "name": "Currency code, Reconciliation",
+      "format": "FIX_CHAR",
+      "size": 3
+    },
+    {
+      "field": 51,
+      "name": "Currency code, Cardholder billing",
+      "format": "FIX_CHAR",
+      "size": 3
+    },
+    {
+      "field": 52,
+      "name": "Personal identification number PIN",
+      "format": "FIX_CHAR",
+      "size": 8
+    },
+    {
+      "field": 53,
+      "name": "Security related control information",
+      "format": "VAR_CHAR",
+      "size": 48
+    },
+    {
+      "field": 54,
+      "name": "Amounts, additional",
+      "format": "VAR_CHAR",
+      "size": 120
+    },
+    {
+      "field": 55,
+      "name": "IC card system related data",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 56,
+      "name": "Original data elements",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 57,
+      "name": "Authorization life cycle code",
+      "format": "FIX_NUMERIC",
+      "size": 9999
+    },
+    {
+      "field": 58,
+      "name": "Authorizing agent institution Id Code",
+      "format": "VAR_NUMERIC",
+      "size": 9999
+    },
+    {
+      "field": 59,
+      "name": "Reserved for private use",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 60,
+      "name": "Reserved for private use",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 61,
+      "name": "Reserved for private use",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 62,
+      "name": "Reserved for private use",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 63,
+      "name": "Reserved for private use",
+      "format": "VAR_CHAR",
+      "size": 9999
+    },
+    {
+      "field": 64,
+      "name": "Message authentication code field",
+      "format": "FIX_CHAR",
+      "size": 8
+    }
+  ]
+}
