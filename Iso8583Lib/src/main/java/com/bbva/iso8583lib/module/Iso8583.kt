@@ -9,7 +9,6 @@ import com.bbva.iso8583lib.iso.data.Version
 private val DEFAULT_VERSION = Version(1, 0, 0)
 object Iso8583 {
 
-    @SuppressLint("StaticFieldLeak")
     private var configData = ConfigData()
     private var IsoPkg: UnpackerIso = UnpackerIso(initVersion = DEFAULT_VERSION)
 

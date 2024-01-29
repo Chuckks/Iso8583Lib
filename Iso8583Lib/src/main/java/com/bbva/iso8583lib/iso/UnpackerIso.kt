@@ -15,7 +15,7 @@ private const val DEFAULT_VERSION_MINOR = 1
 
 private val TAG = Constant.ISO_PRFIX + UnpackerIso::class.java.simpleName
 
-class UnpackerIso(var initVersion: Version = Version(), var fileName: String = DEFAULT_FILENAME, ): IEmpty {
+class UnpackerIso(var initVersion: Version = Version(), var fileName: String = DEFAULT_FILENAME ): IEmpty {
 
     var unpack: Boolean =  false
         private set
@@ -77,12 +77,12 @@ class UnpackerIso(var initVersion: Version = Version(), var fileName: String = D
 
     }
 
-    protected fun checkVersion(version: Version){
+    private fun checkVersion(version: Version){
         if( initVersion.compareTo(version) == DEFAULT_VERSION_MINOR )
             throw UnsupportedOperationException("initVersion [$initVersion] > version [$version] ")
     }
 
-    protected fun validateUnpack(){
+    private fun validateUnpack(){
         if( !unpack )
             throw ExceptionInInitializerError("Unpack [$unpack] Not Initializer File [$fileName]")
     }

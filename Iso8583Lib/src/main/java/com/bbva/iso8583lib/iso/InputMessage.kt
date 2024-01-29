@@ -30,7 +30,6 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
         if (frame.isEmpty())
             throw IllegalArgumentException("Frame [${frame.size}]")
 
-       // mapper.clear()
         this.frame = frame
 
         var nField = 0
