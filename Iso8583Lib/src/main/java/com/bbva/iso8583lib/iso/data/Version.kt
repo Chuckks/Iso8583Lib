@@ -1,6 +1,6 @@
 package com.bbva.iso8583lib.iso.data
 
-import com.bbva.iso8583lib.interfaces.IEmpty
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private const val DEFAULT_MAJOR = 0
 private const val DEFAULT_MINOR = 0
@@ -8,7 +8,7 @@ private const val DEFAULT_BUILD = 0
 private const val DEFAULT_REVISION = 0
 
 data class Version( var major: Int = DEFAULT_MAJOR, var minor: Int = DEFAULT_MINOR,
-                    var build: Int = DEFAULT_BUILD, var revision: Int = DEFAULT_REVISION): IEmpty{
+                    var build: Int = DEFAULT_BUILD, var revision: Int = DEFAULT_REVISION): IEmpty {
 
     override fun isEmpty() = (major == DEFAULT_MAJOR && minor == DEFAULT_MINOR
             && build == DEFAULT_BUILD && revision == DEFAULT_REVISION )
@@ -54,7 +54,6 @@ data class Version( var major: Int = DEFAULT_MAJOR, var minor: Int = DEFAULT_MIN
                 val length = value.length
                 if (length > 20)
                     throw  IllegalArgumentException("String [$value] length [$length] > 20")
-
 
                 var index = 0
                 var position = 0

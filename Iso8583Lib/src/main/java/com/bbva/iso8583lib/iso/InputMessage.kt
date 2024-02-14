@@ -1,35 +1,41 @@
 package com.bbva.iso8583lib.iso
 
 import android.util.Log
-import com.bbva.iso8583lib.interfaces.IEmpty
 import com.bbva.iso8583lib.iso.data.EFormat
 import com.bbva.iso8583lib.iso.data.MapData
 import com.bbva.iso8583lib.utils.Constant
 import com.bbva.utilitieslib.extensions.getDigitCount
 import com.bbva.utilitieslib.extensions.readBbcPair
 import com.bbva.utilitieslib.extensions.toHexaString
+import com.bbva.utilitieslib.interfaces.IEmpty
 
-private const val DEFAULT_FRAME_SIZE = 0
-private const val DEFAULT_MTI = true
+//private const val DEFAULT_FRAME_SIZE = 0
+//private const val DEFAULT_MTI = true
 
 private val TAG = Constant.ISO_PRFIX + InputMessage::class.java.simpleName
 
-class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: Int) :
-    Message(packageData = packagerIso, mtiAvailable = mtiAvailable, frame = ByteArray(frameSize), headerSize = 7),
-    IEmpty {
+class InputMessage : Message, IEmpty {
 
-    constructor(unpackerIso: UnpackerIso) :
-            this(packagerIso = unpackerIso, mtiAvailable = DEFAULT_MTI, frameSize = DEFAULT_FRAME_SIZE)
+    constructor(packageIso: UnpackerIso) : super(packageIso)
+    constructor(mTIAvailable: Boolean) : super(mTIAvailable)
+
+    constructor(mTIAvailable: Boolean, frameSize: Int) : super(mTIAvailable, frameSize)
+    constructor(packageIso: UnpackerIso, mTIAvailable: Boolean) : super(packageIso, mTIAvailable)
+
+    constructor(packageIso: UnpackerIso, mTIAvailable: Boolean, frameSize: Int) :
+            super(packageIso, mTIAvailable, frameSize)
 
     override fun isEmpty() = (frame.isEmpty() && bitmap.isEmpty() && mapper.isEmpty())
 
     fun unpack(frame: ByteArray) {
+        Log.i(TAG, "*** UnPackage Data ***")
         if (!packageData.unpack)
-            throw IllegalArgumentException("PackageData is Empty")
+            throw IllegalArgumentException("PackageData is Empty UNPACK [${packageData.unpack}]")
 
         if (frame.isEmpty())
             throw IllegalArgumentException("Frame [${frame.size}]")
 
+        Log.i(TAG, "UNPACKAGE DATA [${frame.toHexaString()}]")
         this.frame = frame
 
         var nField = 0
@@ -48,7 +54,7 @@ class InputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: I
             length = field.size / 2
 
             this.mapper[nField] = MapData().setMap(field.getFormat(), length, position)
-            Log.i(TAG, "MTI [${frame.copyOfRange(position, position + length).toHexaString()}")
+            Log.i(TAG, "MTI [${frame.copyOfRange(position, position + length).toHexaString()}]")
             position += length
         }
         ++nField

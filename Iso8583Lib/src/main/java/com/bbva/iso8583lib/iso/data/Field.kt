@@ -1,6 +1,6 @@
 package com.bbva.iso8583lib.iso.data
 
-import com.bbva.iso8583lib.interfaces.IEmpty
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private const val DEFAULT_FIELD = 0
 private const val DEFAULT_SIZE = 0

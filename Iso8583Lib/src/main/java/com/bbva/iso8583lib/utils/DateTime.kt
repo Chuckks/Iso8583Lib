@@ -16,6 +16,8 @@ data class DateTime(
 	}
 
 	enum class EFormat(val value: String) {
+		DATE("MMdd"),
+		TIME("HHmmss"),
 		DATE_TIME("dd/MM/yyyy HH:mm:ss"),
 		ISO8601("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
 	}
@@ -31,6 +33,8 @@ data class DateTime(
 			setDefaultDateTime()
 
 		return when(format){
+			EFormat.DATE -> String.format("%02d%02d", date.month, date.day)
+			EFormat.TIME -> String.format("%02d%02d%02d", time.hour, time.minute, time.second)
 			EFormat.DATE_TIME->String.format("%02d/%02d/%04d %02d:%02d:%02d",date.day,date.month,date.year, time.hour,time.minute,time.second)
 			EFormat.ISO8601->String.format("%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",date.year,date.month,date.day, time.hour,time.minute,time.second,time.nano)
 		}
@@ -43,8 +47,10 @@ data class DateTime(
 		fun now():DateTime{
 			val dateNow = Calendar.getInstance( )
 
-			return	DateTime(Date(dateNow.get(Calendar.YEAR),dateNow.get(Calendar.MONTH) + DEFAULT_MONTH,
-					dateNow.get(Calendar.DAY_OF_MONTH)),Time(dateNow.get(Calendar.HOUR_OF_DAY),dateNow.get(Calendar.MINUTE),
+			return	DateTime(
+				Date(dateNow.get(Calendar.YEAR),dateNow.get(Calendar.MONTH) + DEFAULT_MONTH,
+					dateNow.get(Calendar.DAY_OF_MONTH)),
+				Time(dateNow.get(Calendar.HOUR_OF_DAY),dateNow.get(Calendar.MINUTE),
 					dateNow.get(Calendar.SECOND),dateNow.get(Calendar.MILLISECOND) ))
 		}
 

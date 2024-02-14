@@ -2,14 +2,17 @@ package com.bbva.iso8583lib.module
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.bbva.iso8583lib.interfaces.IEmpty
 import com.bbva.iso8583lib.iso.UnpackerIso
 import com.bbva.iso8583lib.iso.data.Version
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private val DEFAULT_VERSION = Version(1, 0, 0)
+
 object Iso8583 {
 
-    private var configData = ConfigData()
+    @SuppressLint("StaticFieldLeak")
+    private var configData: ConfigData = ConfigData()
+
     private var IsoPkg: UnpackerIso = UnpackerIso(initVersion = DEFAULT_VERSION)
 
     var init = false

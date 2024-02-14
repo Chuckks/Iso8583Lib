@@ -365,7 +365,7 @@
       "field": 60,
       "name": " POS Terminal Entry Capability",
       "format": "VAR_CHAR",
-      "size": 25
+      "size": 999
     },
     {
       "field": 61,
@@ -377,7 +377,7 @@
       "field": 62,
       "name": "EMV Reference Cryptogram",
       "format": "VAR_CHAR",
-      "size": 8
+      "size": 999
     },
     {
       "field": 63,

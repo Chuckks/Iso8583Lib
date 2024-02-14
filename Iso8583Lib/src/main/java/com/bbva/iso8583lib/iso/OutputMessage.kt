@@ -1,39 +1,49 @@
 package com.bbva.iso8583lib.iso
 
 import android.util.Log
-import com.bbva.iso8583lib.interfaces.IEmpty
+import com.bbva.iso8583lib.extensions.toHexByteArray
 import com.bbva.iso8583lib.iso.data.EFormat
 import com.bbva.iso8583lib.iso.data.MapData
 import com.bbva.iso8583lib.utils.Constant
 import com.bbva.utilitieslib.extensions.getDigitCount
-import com.bbva.utilitieslib.utils.Convert
+import com.bbva.utilitieslib.extensions.toAsciiToBcd
+import com.bbva.utilitieslib.extensions.toDecimalToBcd
+import com.bbva.utilitieslib.extensions.toHexaString
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private val TAG = Constant.ISO_PRFIX + OutputMessage::class.java.simpleName
 
-private const val DEFAULT_FRAME_SIZE = 0
-private const val DEFAULT_MTI = true
+//private const val DEFAULT_FRAME_SIZE = 0
+//private const val DEFAULT_MTI = true
+private const val DEFAULT_HEADER_SIZE = 5
 
-class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: Int) :
-    Message(packageData = packagerIso, mtiAvailable = mtiAvailable, frame = ByteArray(frameSize)),
-    IEmpty {
+class OutputMessage : Message, IEmpty {
 
-    constructor(unpackerIso: UnpackerIso) :
-            this(packagerIso = unpackerIso, mtiAvailable = DEFAULT_MTI, frameSize = DEFAULT_FRAME_SIZE)
+    constructor(packageIso: UnpackerIso) : super(packageIso)
+    constructor(mTIAvailable: Boolean) : super(mTIAvailable)
+
+    constructor(mTIAvailable: Boolean, frameSize: Int) : super(mTIAvailable, frameSize)
+    constructor(packageIso: UnpackerIso, mTIAvailable: Boolean) : super(packageIso, mTIAvailable)
+
+    constructor(packageIso: UnpackerIso, mTIAvailable: Boolean, frameSize: Int) :
+            super(packageIso, mTIAvailable, frameSize)
 
     override fun isEmpty() = (frame.isEmpty() && bitmap.isEmpty() && mapper.isEmpty())
 
     fun pack(): ByteArray {
+        Log.i(TAG, "*** Package Data ***")
         if (!packageData.unpack)
             throw ExceptionInInitializerError("PackageData")
 
         if (this.frame.isEmpty())
             throw ExceptionInInitializerError( "Not set any fields")
 
+        headerSize = DEFAULT_HEADER_SIZE
         var result = ByteArray(0)
 
         if (header.isNotEmpty() && headerSize == this.header.size) {
             result += this.header
-            Log.i(TAG, "HEADER [${header.contentToString()}] SIZE[${header.size}]")
+            Log.i(TAG, "HEADER [${header.toHexaString()}] SIZE[${header.size}]")
         }
 
         var nField: Int = 0
@@ -46,7 +56,7 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
                 throw  ExceptionInInitializerError("nField [$nField]")
 
             var mti = frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length)
-            Log.i(TAG, "MTI  [${mti.contentToString()}] SIZE [${mti.size}]")
+            Log.i(TAG, "MTI  [${mti.toHexaString()}] SIZE [${mti.size}]")
             result += mti
         }
         nField++
@@ -61,19 +71,27 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
 
             if (mapDat.isNotEmpty()) {
                 bitmap.setBitOn(bit)
-                var field = ByteArray(0)
-                field += frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length)
 
+                val field = frame.copyOfRange(mapDat.position, mapDat.position + mapDat.length)
                 val nFieldLog = "F%02d".format(nField)
-                Log.i(TAG, "$nFieldLog FIELD [${field}] SIZE[${field.size}")
+
+                Log.i(TAG, "$nFieldLog VALUE [${field.toHexaString()}] SIZE [${field.size}]")
                 result += field
             }
 
             nField++
         }
         bitmap.value.copyInto(result, destinationOffset = positionBitmap)
-        Log.i(TAG, "BITMAP [${Convert.toBcdToHexa(bitmap.value)}  SIZE[${bitmap.value.size}]")
-        return result
+        Log.i(TAG, "BITMAP [${bitmap.value.toHexaString()}]  SIZE[${bitmap.value.size}]")
+
+        val framePackage = ByteArray(result.size + 2).apply {
+            val sizeIso = (result.size + 2).toHexByteArray(2)
+            sizeIso.copyInto(this, 0)
+            result.copyInto(this, sizeIso.size)
+        }
+
+        Log.i(TAG, "PACKAGE DATA [${framePackage.toHexaString()}]")
+        return framePackage
     }
 
     fun setField(nField: Int, value: String){
@@ -89,7 +107,6 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
             Log.i(TAG,"Field [$nField] lenCopy [$length] > sizeField [$size]")
             length = size
         }
-
 
         val position = this.frame.size
         val variable = addLength(format, length, size)
@@ -114,8 +131,7 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
         size /= 2
 
         mapper[nField] = MapData(format, size + variable, position)
-
-       frame += Convert.toAsciiToBcd(aux.toString().toByteArray())
+        frame += aux.toString().toByteArray().toAsciiToBcd()
     }
 
     private fun addLength(format: EFormat, length: Int, size: Int): Int{
@@ -128,7 +144,8 @@ class OutputMessage(packagerIso: UnpackerIso, mtiAvailable: Boolean, frameSize: 
                     ++variable
 
                 variable /= 2
-                frame += Convert.toDecimalToBcd(variable, length)
+
+                frame += length.toDecimalToBcd(variable)
                 variable
             }
 

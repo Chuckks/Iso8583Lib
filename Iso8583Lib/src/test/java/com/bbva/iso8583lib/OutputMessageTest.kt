@@ -16,13 +16,13 @@ class OutputMessageTest {
         Assert.assertTrue(unpacker.unpack)
 
         val outputMessage = OutputMessage(unpacker)
+        outputMessage.header = "6000220000".toHexaBytes()
         outputMessage.setField(0, 200)
         outputMessage.setField(3, 0)
         outputMessage.setField(4, 90000)
         outputMessage.setField(11, 999999)
         outputMessage.setField(48, "004451761")
         outputMessage.setField(55, DEFAULT_ISO_FIELD_55.toHexaBytes())
-
 
         val packedData = outputMessage.pack()
         Assert.assertFalse(packedData.isEmpty())

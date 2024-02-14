@@ -1,6 +1,6 @@
-package com.bbva.iso8583lib.transaction
+package com.bbva.iso8583lib.comms
 
-import com.bbva.iso8583lib.interfaces.IEmpty
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private const val DEFAULT_IP = "127.0.0.0"
 private const val DEFAULT_PORT = 8080

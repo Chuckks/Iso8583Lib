@@ -1,13 +1,13 @@
 package com.bbva.iso8583lib.iso
 
 import android.util.Log
-import com.bbva.iso8583lib.interfaces.IEmpty
 import com.bbva.iso8583lib.iso.data.Field
 import com.bbva.iso8583lib.iso.data.IsoField
 import com.bbva.iso8583lib.iso.data.Version
 import com.bbva.iso8583lib.module.Iso8583
 import com.bbva.iso8583lib.utils.Constant
 import com.bbva.utilitieslib.extensions.getAssetToString
+import com.bbva.utilitieslib.interfaces.IEmpty
 
 private const val DEFAULT_FILENAME = "unPackerIso"
 private const val DEFAULT_MAXCOUNT = 128
@@ -15,7 +15,8 @@ private const val DEFAULT_VERSION_MINOR = 1
 
 private val TAG = Constant.ISO_PRFIX + UnpackerIso::class.java.simpleName
 
-class UnpackerIso(var initVersion: Version = Version(), var fileName: String = DEFAULT_FILENAME ): IEmpty {
+class UnpackerIso(var initVersion: Version = Version(), var fileName: String = DEFAULT_FILENAME ):
+    IEmpty {
 
     var unpack: Boolean =  false
         private set

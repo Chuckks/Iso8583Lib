@@ -2,7 +2,6 @@ package com.bbva.iso8583lib
 
 import com.bbva.iso8583lib.iso.InputMessage
 import com.bbva.iso8583lib.iso.UnpackerIso
-import com.bbva.iso8583lib.utils.Convert
 import com.bbva.utilitieslib.extensions.toHexaBytes
 import org.junit.Assert
 import org.junit.Test
