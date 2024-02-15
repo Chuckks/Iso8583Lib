@@ -48,8 +48,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation ("com.github.Chuckks:UtilitiesLib:1.0.14")
-    implementation ("com.github.Chuckks:DeviceLib:1.0.7")
+    implementation ("com.github.Chuckks:UtilitiesLib:1.0.15")
+    implementation ("com.github.Chuckks:DeviceLib:1.0.10")
 }
 
 publishing {
