@@ -25,8 +25,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -50,4 +50,18 @@ dependencies {
 
     implementation ("com.github.Chuckks:UtilitiesLib:1.0.14")
     implementation ("com.github.Chuckks:DeviceLib:1.0.7")
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.bbva"
+            artifactId = "iso8583"
+            version = "1.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }
