@@ -26,6 +26,5 @@ interface IOperation {
 		override fun isEmpty()=(message == DEFAULT_VALUE && reason == DEFAULT_REASON && operation == null)
 	}
 
-	//suspend fun execute(inputData: InputData): OutputData
-	fun execute(inputData: InputData): OutputData
+	suspend fun execute(inputData: InputData): OutputData
 }
