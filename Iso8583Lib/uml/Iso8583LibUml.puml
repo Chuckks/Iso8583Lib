@@ -1,4 +1,7 @@
 @startuml
+!define DARKBLUE
+!includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
+
 enum com.bbva.iso8583lib.iso.data.Version$ELevel {
 +  MAJOR
 +  MAJOR_MINOR
