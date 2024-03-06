@@ -1,0 +1,434 @@
+@startuml
+enum com.bbva.iso8583lib.iso.data.Version$ELevel {
++  MAJOR
++  MAJOR_MINOR
++  MAJ_MIN_BUILD
++  MAJ_MIN_BUILD_REV
+}
+
+class com.bbva.iso8583lib.iso.data.Version$Companion {
++ Version parser(String)
+}
+
+class com.bbva.iso8583lib.iso.data.Version {
++ void isEmpty()
++ void toString()
++ void toString(ELevel)
++ Int compareTo(Version)
+}
+
+class com.bbva.iso8583lib.utils.Convert$Companion {
++ ByteArray toHexaToAscii(ByteArray)
+}
+
+class com.bbva.iso8583lib.utils.Convert {
+}
+class com.bbva.iso8583lib.ExampleInstrumentedTest {
++ void useAppContext()
+}
+
+class com.bbva.iso8583lib.OutputMessageTest {
++ void fieldsConfiguredCorrectly()
++ void fieldNotConfigured()
+}
+
+class com.bbva.iso8583lib.utils.Constant {
++  BBVA_PREFIX
++  ISO_PRFIX
+}
+
+class com.bbva.iso8583lib.IsoFileTest$Companion {
++  DEFAULT_VERSION
++  DEFAULT_ISO_FIELD_55
++  DEFAULT_BYTEARRAY_ISO
++ String file
+}
+
+class com.bbva.iso8583lib.IsoFileTest {
+}
+class com.bbva.iso8583lib.iso.OutputMessage {
++ void isEmpty()
++ ByteArray pack()
++ void setField(Int,String)
++ void setField(Int,ByteArray)
++ void setField(Int,Int)
+- Int addLength(EFormat,Int,Int)
+}
+
+class com.bbva.iso8583lib.iso.data.MapData {
++ void clean()
++ void isEmpty()
++ MapData setMap(EFormat,Int,Int)
+}
+
+class com.bbva.iso8583lib.comms.SocketServer {
+- Socket socket
+- ByteArray received
+- Boolean opened
+- TimeSpan connectTimeout
+- TimeSpan readTimeout
+- OutputStream outputStream
+- InputStream inputStream
+-  value
++ void isEmpty()
++ Boolean connect()
++ Boolean disconnect()
++ void isOpened()
++ Boolean send(String)
++ Boolean send(ByteArray)
++ void receive()
+}
+
+
+interface com.bbva.iso8583lib.interfaces.IProcess {
++ Boolean initialize()
++ Boolean prepare()
++ Boolean execute()
++ Boolean checkResponse()
++ Boolean processError()
++ Boolean processData()
++ Boolean saveData()
++ Boolean complete()
++ Boolean run()
+}
+
+class com.bbva.iso8583lib.UnpackerIsoTest {
+- UnpackerIso unpackerIso
++ void validateGetItemTest()
++ void checkVersionEqualsTest()
++ void searchExistingFieldTest()
++ void searchNotExistingFieldTest()
+}
+
+
+class com.bbva.iso8583lib.iso.Message {
++ ByteArray header
+# Int headerSize
+# ByteArray frame
+# Bitmap bitmap
+# MutableList<MapData> mapper
+# UnpackerIso packageData
+# Boolean mtiAvailable
++ void clean()
++ Boolean isEmpty()
++ EFormat getFormat(Int)
++ Int getSize(Int)
++ Boolean isEmpty(Int)
++ ByteArray getValue(Int)
+}
+
+
+class com.bbva.iso8583lib.InputMessageTest {
++ void fieldsConfiguredCorrectly()
+}
+
+class com.bbva.iso8583lib.iso.data.IsoField$Companion {
++ IsoField fromJson(String)
+}
+
+class com.bbva.iso8583lib.iso.data.IsoField {
++ void isEmpty()
+}
+
+class com.bbva.iso8583lib.module.Iso8583$ConfigData {
++ void isEmpty()
+}
+
+class com.bbva.iso8583lib.module.Iso8583 {
+- ConfigData configData
+- UnpackerIso IsoPkg
++  init
++ Context context
++ UnpackerIso IsoPackage
++ String isoFileName
+-  DEFAULT_CONTEXT
++ void initModule(ConfigData)
+}
+
+
+class com.bbva.iso8583lib.utils.Date {
++ void toString()
++ void isEmpty()
+}
+
+class com.bbva.iso8583lib.comms.ServerData {
++ void isEmpty()
+}
+
+class com.bbva.iso8583lib.iso.Bitmap {
++ ByteArray value
++ void clean()
++ Boolean isEmpty()
++ Int getSize()
++ Boolean isBitOn(Int)
++ void setBitOn(Int)
++ void checkField(Int)
+}
+
+
+interface com.bbva.iso8583lib.interfaces.IBundle {
++ Bundle toBundle()
+}
+
+enum com.bbva.iso8583lib.module.EReason {
++  NONE
++  NOT_INIT_MODULE
++  SERVICE_CONNECTION
++  SERVICE_DISCONNECT
++  IO_EXCEPTION
++  SEND_TX_SUCCESS
++  SEND_TX_FAIL
++  RECEIVE_TX_SUCCESS
++  RECEIVE_TX_FAIL
++  PREPARE_SUCCESS
++  INIT_SUCCESS
++  PRECONDITION_SUCCESS
++  RESPONSE_SUCCESS
++  RESPONSE_FAIL
++  OPERATION_FAIL
++  OPERATION_SUCCESS
++  SERVER_CONNECT_SUCCESS
++  SERVER_CONNECT_FAIL
++  SERVER_DISCONNECT_SUCCESS
++  SERVER_DISCONNECT_FAIL
++  PACK_SPECIFIC_FIELD_SUCCESS
++  PACK_SPECIFIC_FIELD_FAIL
++  UNPACK_SPECIFIC_FIELD_SUCCESS
++  UNPACK_SPECIFIC_FIELD_FAIL
+}
+
+interface com.bbva.iso8583lib.interfaces.IContenible {
++ void clean()
+}
+
+enum com.bbva.iso8583lib.utils.Process$EStep {
++  STARTED
++  INITIALIZED
++  PREPARED
++  EXECUTED
++  CHECKED_RESPONSE
++  PROCESSED_ERROR
++  PROCESSED_DATA
++  SAVED
++  COMPLETED
+}
+
+class com.bbva.iso8583lib.utils.Process {
++  step
++ Boolean initialize()
++ Boolean prepare()
++ Boolean execute()
++ Boolean checkResponse()
++ Boolean processData()
++ Boolean saveData()
++ Boolean complete()
++ Boolean processError()
++ Boolean run()
+}
+
+
+enum com.bbva.iso8583lib.utils.DateTime$EFormat {
++  DATE
++  TIME
++  DATE_TIME
++  ISO8601
+}
+
+class com.bbva.iso8583lib.utils.DateTime$Companion {
++  DEFAULT_CONST_DATE
++ DateTime now()
++ void checkDateStr(String)
+}
+
+
+class com.bbva.iso8583lib.utils.DateTime {
++ void isEmpty()
++ String toString()
+- void setDefaultDateTime()
++ String format(EFormat)
+}
+
+class com.bbva.iso8583lib.module.AbstractTransactionNew {
+# InputMessage inputMsg
+# OutputMessage outputMsg
+# ByteArray responseCode
+# SocketServer socket
+}
+
+class com.bbva.iso8583lib.iso.UnpackerIso {
++ Boolean unpack
+- List<Field> listField
++ void isEmpty()
++ void getCounter()
++ Field search(Field)
++ void unpacker(String,Version)
++ void unPacker(String)
++ Field getItem(Int)
+- void checkVersion(Version)
+- void validateUnpack()
+}
+
+
+class com.bbva.iso8583lib.iso.InputMessage {
++ void isEmpty()
++ void unpack(ByteArray)
++ ByteArray getField(Int)
+}
+
+class com.bbva.iso8583lib.interfaces.IOperation$InputData {
++ void isEmpty()
+}
+
+class com.bbva.iso8583lib.interfaces.IOperation$OutputData {
++ void isEmpty()
+}
+
+interface com.bbva.iso8583lib.interfaces.IOperation {
++ OutputData execute(InputData)
+}
+
+class com.bbva.iso8583lib.iso.data.Field {
++ void isEmpty()
++ void checkField(Int)
++ void getFormat()
+}
+
+class com.bbva.iso8583lib.iso.data.EFormat$Companion {
++ EFormat translateFormat(String)
+}
+
+enum com.bbva.iso8583lib.iso.data.EFormat {
++  UNKNOW
++  FIX_CHAR
++  FIX_NUMERIC
++  VAR_CHAR
++  VAR_NUMERIC
+}
+
+abstract class com.bbva.iso8583lib.module.AbstractTransaction {
+- UnpackerIso packageIso
+#  inputMsg
+#  outputMsg
++ void execute(IOperation.InputData)
+# EReason packSpecificFields()
+# EReason unpackSpecificFields()
+# void packDefault()
+# void packField55()
+# void packField56()
+# void packField60()
+# void packField63()
+# void unpackDefault()
+# void unpackField63()
+# ByteArray encryptRequest(ByteArray)
+# ByteArray encryptRequest(String)
+# ByteArray decryptResponse(ByteArray)
+# ByteArray decryptResponse(String)
+}
+
+
+class com.bbva.iso8583lib.utils.Time$Companion {
++  empty
+}
+
+class com.bbva.iso8583lib.utils.Time {
++ void toString()
++ void isEmpty()
+}
+
+interface com.bbva.iso8583lib.interfaces.ITransaccionIso {
++ EReason processData()
++ EReason processError()
++ IOperation.OutputData buildOutputError(EReason)
++ IOperation.OutputData buildOutput(EReason)
++ EReason checkResponse()
++ void prepare()
++ void precondition()
++ void initialize(IOperation.InputData)
++ EReason serverConnect()
++ EReason serverDisconnect()
++ ByteArray createRequest()
++ EReason sendTransaction(ByteArray)
++ EReason receiveResponse()
++ EReason packSpecificFields()
++ EReason unpackSpecificFields()
++ void packDefault()
++ void packField55()
++ void packField56()
++ void packField60()
++ void packField63()
++ void unpackDefault()
++ void unpackField63()
++ ByteArray encryptRequest(ByteArray)
++ ByteArray encryptRequest(String)
++ ByteArray decryptResponse(ByteArray)
++ ByteArray decryptResponse(String)
++ void printTransaction()
++ void printTransactionError()
++ void saveTransaction()
++ void saveTransactionError()
++ IOperation.OutputData run(IOperation.InputData)
+}
+
+interface com.bbva.iso8583lib.comms.ISocket {
++ Boolean connect()
++ Boolean disconnect()
++ Boolean isOpened()
++ Boolean send(String)
++ Boolean send(ByteArray)
++ ByteArray receive()
+}
+
+interface com.bbva.iso8583lib.interfaces.IIsoTransaction {
++ EReason processData()
++ EReason processError()
++ IOperation.OutputData buildOutputError(EReason)
++ IOperation.OutputData buildOutput(EReason)
++ EReason checkResponse()
++ void prepare()
++ void precondition()
++ void initialize(IOperation.InputData)
++ EReason serverConnect()
++ EReason serverDisconnect()
++ ByteArray createRequest()
++ EReason sendTransaction(ByteArray)
++ EReason receiveResponse()
++ IOperation.OutputData run(IOperation.InputData)
+}
+
+
+
+com.bbva.iso8583lib.iso.data.Version +.. com.bbva.iso8583lib.iso.data.Version$ELevel
+com.bbva.iso8583lib.iso.data.Version +.. com.bbva.iso8583lib.iso.data.Version$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.data.Version
+com.bbva.iso8583lib.utils.Convert +.. com.bbva.iso8583lib.utils.Convert$Companion
+com.bbva.iso8583lib.IsoFileTest +.. com.bbva.iso8583lib.IsoFileTest$Companion
+com.bbva.iso8583lib.iso.Message <|.. com.bbva.iso8583lib.iso.OutputMessage
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.OutputMessage
+com.bbva.iso8583lib.interfaces.IContenible <|.. com.bbva.iso8583lib.iso.data.MapData
+com.bbva.iso8583lib.comms.ISocket <|.. com.bbva.iso8583lib.comms.SocketServer
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.comms.SocketServer
+com.bbva.iso8583lib.interfaces.IContenible <|.. com.bbva.iso8583lib.iso.Message
+com.bbva.iso8583lib.iso.data.IsoField +.. com.bbva.iso8583lib.iso.data.IsoField$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.data.IsoField
+com.bbva.iso8583lib.module.Iso8583 +.. com.bbva.iso8583lib.module.Iso8583$ConfigData
+com.bbva.iso8583lib.module.IEmpty <|.. com.bbva.iso8583lib.module.Iso8583$ConfigData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.comms.ServerData
+com.bbva.iso8583lib.interfaces.IContenible <|.. com.bbva.iso8583lib.iso.Bitmap
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.interfaces.IContenible
+com.bbva.iso8583lib.utils.Process +.. com.bbva.iso8583lib.utils.Process$EStep
+com.bbva.iso8583lib.interfaces.IProcess <|.. com.bbva.iso8583lib.utils.Process
+com.bbva.iso8583lib.utils.DateTime +.. com.bbva.iso8583lib.utils.DateTime$EFormat
+com.bbva.iso8583lib.utils.DateTime +.. com.bbva.iso8583lib.utils.DateTime$Companion
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.UnpackerIso
+com.bbva.iso8583lib.iso.Message <|.. com.bbva.iso8583lib.iso.InputMessage
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.InputMessage
+com.bbva.iso8583lib.interfaces.IOperation +.. com.bbva.iso8583lib.interfaces.IOperation$InputData
+com.bbva.iso8583lib.interfaces.IEmpty <|.. com.bbva.iso8583lib.interfaces.IOperation$InputData
+com.bbva.iso8583lib.interfaces.IOperation +.. com.bbva.iso8583lib.interfaces.IOperation$OutputData
+com.bbva.iso8583lib.interfaces.IEmpty <|.. com.bbva.iso8583lib.interfaces.IOperation$OutputData
+com.bbva.utilitieslib.interfaces.IEmpty <|.. com.bbva.iso8583lib.iso.data.Field
+com.bbva.iso8583lib.iso.data.EFormat +.. com.bbva.iso8583lib.iso.data.EFormat$Companion
+com.bbva.iso8583lib.interfaces.IIsoTransaction <|.. com.bbva.iso8583lib.module.AbstractTransaction
+com.bbva.iso8583lib.interfaces.IOperation <|.. com.bbva.iso8583lib.module.AbstractTransaction
+com.bbva.iso8583lib.utils.Time +.. com.bbva.iso8583lib.utils.Time$Companion
+@enduml
